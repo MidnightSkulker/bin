@@ -1,0 +1,2 @@
+#!/bin/bash
+perl -pi -w -e 'si/Google /Google\ /g;' bin/activate

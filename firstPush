@@ -1,0 +1,5 @@
+#!/bin/bash
+# Parameter: Path to get repo to make origin
+git remote add origin $1
+git push -u origin master
+

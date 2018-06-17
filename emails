@@ -1,3 +1,6 @@
 #!/bin/bash
-set -v
-cat ~/Google\ Drive/Learn/Haskell/AppleContactsParse/ARCHIVE/all.json | jq '.[].fields | select((.ORG != null) and (.ORG[0] | contains("Kasalukuyang")))' | jq '. | with_entries(select(.key|match("EMAIL-+";"")))[]'
+rm -f temp
+cat ~/Google\ Drive/Learn/Haskell/AppleContactsParse/ARCHIVE/all.json | jq '.[].fields | select((.ORG != null) and (.ORG[0] | contains("Kasalukuyang")))' | jq '. | with_entries(select(.key|match("EMAILS+";"")))[]' >temp
+cat temp
+echo `wc -l temp` emails listed
+rm -f temp

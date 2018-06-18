@@ -4,4 +4,7 @@ cat ~/Google\ Drive/Learn/Haskell/AppleContactsParse/ARCHIVE/all.json | jq '.[].
 cat temp
 echo `wc -l temp` emails listed
 rm -f temp
-# '.fmep| "\(.foo) \(.bar)"'
+# From the Web:
+# String Interpolation along with the -r option. e.g.
+# echo '{ "fmep": { "foo": 112, "bar": 234324, "cat": 21343423 } }' | \
+# jq -r '.fmep| "\(.foo) \(.bar)"'

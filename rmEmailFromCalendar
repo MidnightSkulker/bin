@@ -1,0 +1,3 @@
+#!/bin/bash
+cd ~/Library/Calendars
+grep -ri $1 . | grep -v Binary | sort -u | cut -f 1 -d ":" | xargs rm

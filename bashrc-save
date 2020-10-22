@@ -1,0 +1,121 @@
+source ~/.git-prompt.sh
+
+if [ "$color_prompt" = yes ]; then
+    PS1=;\[\033[01;32m\]\u [\#].\w: \W$(__git_ps1 " (%s)") \[\033[00m\];
+else
+    PS1="\u [\#].\w: "
+fi
+unset color_prompt force_color_prompt
+PS1='\[\033[01;31m\][\#] \[\033[01;35m\]\u \[\033[01;34m\]\w: $(__git_ps1 "(%s) ")\[\033[30m\]'
+JAVA_HOME='/usr/libexec/java_home'
+#JAVA_HOME='/Library/Java/Home'
+export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
+export JAVA_11_HOME=$(/usr/libexec/java_home -v11)
+alias java8='export JAVA_HOME=JAVA_8_HOME'
+alias java11='export JAVA_HOME=$JAVA_11_HOME'
+java11
+
+SVN_EDITOR=emacs
+ETAGS='-R'
+DR='/Library/WebServer/Documents'
+MACTEXBIN='/Applications/TeX/TeXShop.app/Contents/Resources/TeXShop/bin'
+TEXBIN='/usr/texbin'
+
+export PATH=.:/anaconda3/bin:/Users/wooky/bin:/opt/local/bin:/opt/local/sbin:/Library/Java/Home/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin:/usr/local/opt/scala/bin:~/.daml/bin:$PATH
+# export PATH=.:/Users/wooky/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin:$PATH
+
+
+export SVN_EDITOR
+export JAVA_HOME
+export ETAGS
+export DR
+export TEXBIN
+
+# Run latex in an emacs shell
+lxp() {
+    /Library/Tex/texbin/latex $1.tex
+    /Library/TeX/texbin/dvipdfm $1.dvi
+}
+
+# History with a grep
+hg() {
+    history | grep $1
+}
+
+alias encrypt='zip -e ' # Lalergoo
+alias m='make'
+alias j='java'
+alias jc='javac'
+alias ls='ls -G'
+alias lx='/Library/TeX/texbin/latex'
+alias ct='cd ~/Google\ Drive/CategoryTheory'
+alias l='cd ~/Google\ Drive/Learn'
+alias mcm='make clean; make'
+alias h='history'
+alias colors='showrgb | emacs'
+alias clean='rm -f *~ *.hi *.o *.out *.aux *.prof *.err'
+alias x='chmod +x'
+alias xe='xemacs'
+alias pss='top -o cpu'
+alias texbin='ls $TEXBIN'
+alias create-venv='python -m venv'
+alias cv='python -m venv'
+alias act='source ./bin/activate'
+
+# X terms
+alias xch='xterm -bg chartreuse -fg black &'
+alias xth='xterm -bg thistle -fg black &'
+alias xor='xterm -bg Orange1 -fg black &'
+alias xdog='xterm -bg darkolivegreen1 -fg black &'
+alias xblwh='xterm -bg black -fg AntiqueWhite &'
+
+# Apache mappings
+alias dr='cd /Library/WebServer/Documents' # Document root
+alias ra='sudo /usr/sbin/apachectl restart' # Restart apache
+
+# Python
+export PYVER=3.7
+# export PYTHON_ROOT="/usr/local/Cellar/python3/3.6.4/Frameworks/Python.framework" 
+# alias python="/usr/local/bin/python3"
+alias python="/anaconda3/bin/python"
+
+if [ `id -ur` = 0 ]; then
+        # Run from the installer, do some trickery to fetch the information
+        # we need.
+        theShell="`finger $USER | grep Shell: | head  -1 | awk '{ print $NF }'`"
+
+else
+        theShell="${SHELL}"
+fi
+
+# Make sure the directory ${PYTHON_ROOT}/bin is on the users PATH.
+BSH="`basename "${theShell}"`"
+case "${BSH}" in
+bash|ksh|sh|*csh|zsh)
+        if [ `id -ur` = 0 ]; then
+                P=`su - ${USER} -c 'echo A-X-4-X@@$PATH@@X-4-X-A' | grep 'A-X-4-X@@.*@@X-4-X-A' | sed -e 's/^A-X-4-X@@//g' -e 's/@@X-4-X-A$//g'`
+        else
+                P="`(exec -l ${theShell} -c 'echo $PATH')`"
+        fi
+        ;;
+*)
+        echo "Sorry, I don't know how to patch $BSH shells"
+        exit 0
+        ;;
+esac
+
+# Now ensure that our bin directory is on $P and before /usr/bin at that
+for elem in `echo $P | tr ':' ' '`
+do
+        if [ "${elem}" = "${PYTHON_ROOT}/bin" ]; then
+                echo "All right, you're a python lover already"
+                exit 0
+        elif [ "${elem}" = "/usr/bin" ]; then
+                break
+        fi
+done
+
+if [ -f ~/.git-completion.bash ]; then
+    source ~/.git-completion.bash
+fi
+

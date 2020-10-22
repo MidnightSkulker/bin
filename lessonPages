@@ -1,0 +1,12 @@
+#!/bin/bash
+# $1 pdf file to get pages from
+# $2 Output file base name
+# $3 First page number
+# $4 Last page number
+# set -o verbose
+pdfseparate -f $3 -l $4 $1 $2-%d.pdf
+for j in $2-*.pdf
+do
+  echo $j `basename $j .pdf`
+  sips -s format jpeg $j --out `basename $j .pdf`.jpg
+done

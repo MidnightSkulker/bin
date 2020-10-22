@@ -1,0 +1,14 @@
+#!/bin/bash
+rm -f temp students.json NoImmunization.json NoImmunizationEmail.json NoImmunizationEmail
+# cat ~/Google\ Drive/Learn/Haskell/AppleContactsParse/ARCHIVE/all.json | jq '.[].fields | select((.ORG != null) and (.ORG[0] | contains("Kasalukuyang")) and (.Immunization != null) and (.Immunization == "No"))' | jq -r '. | "\(with_entries(select(.key|match("FN+";"")))[]), \(with_entries(select(.key|match("Immun+";"")))[]), \(with_entries(select(.key|match("EMAIL1+";"")))[])"' | grep -v aim | sort -u >immunization.out
+cat ~/Google\ Drive/Learn/Haskell/AppleContactsParse/ARCHIVE/all.json | jq '.[].fields | select((.ORG != null) and (.ORG[0] | contains("Kasalukuyang")))' >students.json
+cat students.json | jq '. | select((.Immunization != null) and (.Immunization == "No"))' >NoImmunization.json
+cat NoImmunization.json | jq -c '. | {Immunization: .Immunization, Name: .FN, Email: .EMAIL1}' | sort -u >NoImmunizationEmail.json
+cat NoImmunizationEmail.json | jq -r '.Email' | grep -v null >NoImmunizationEmail
+# echo `wc -l immunization.out` records listed
+# cat immunization.out | cut -d "," -f 3 | sed 's/^.//' >immunization.emails
+# rm -f temp
+# From the Web:
+# String Interpolation along with the -r option. e.g.
+# echo '{ "fmep": { "foo": 112, "bar": 234324, "cat": 21343423 } }' | \
+# jq -r '.fmep| "\(.foo) \(.bar)"'

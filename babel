@@ -1,0 +1,4 @@
+#!/bin/bash
+set -o verbose
+npm install babel-core babel-loader babel-preset-env babel-preset-react babel-preset-stage-0 --save-dev
+npm install react react-dom --save
